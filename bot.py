@@ -1,18 +1,16 @@
 import discord
 from discord.ext import commands
+import os
 from datetime import datetime
 
-TOKEN = " MTUwNjQyMDQ4MTcxMTE0NTAzMQ.GjR45I.-O4z1DYzdTi697baVqw3uNWNXULFPKE4X0XjI4"
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.all()
-
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Hard Virus
 HARD_INTERVAL = 14 * 60
 HARD_START = datetime(2026, 5, 20, 0, 0)
 
-# Nightmare Virus
 NM_INTERVAL = 4 * 60 * 60
 NM_START = datetime(2026, 5, 20, 2, 0)
 
@@ -33,12 +31,10 @@ async def on_ready():
 
 @bot.command()
 async def hard(ctx):
-    time = get_remaining(HARD_START, HARD_INTERVAL)
-    await ctx.send(f"🦠 Next Hard Virus in: **{time}**")
+    await ctx.send(f"🦠 Next Hard Virus in: **{get_remaining(HARD_START, HARD_INTERVAL)}**")
 
 @bot.command()
 async def nm(ctx):
-    time = get_remaining(NM_START, NM_INTERVAL)
-    await ctx.send(f"☠️ Next Nightmare Virus in: **{time}**")
+    await ctx.send(f"☠️ Next Nightmare Virus in: **{get_remaining(NM_START, NM_INTERVAL)}**")
 
 bot.run(TOKEN)
