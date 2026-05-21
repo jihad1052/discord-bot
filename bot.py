@@ -38,8 +38,8 @@ async def hard(ctx):
     t2 = get_remaining(HARD_START_2, HARD_INTERVAL_2)
 
     await ctx.send(
-        f"""🦠Hard Virus 1~ {t1}
-🦠Hard Virus 2~ {t2}"""
+        f"""🦠Hard Virus 1:  {t1}
+🦠Hard Virus 2:  {t2}"""
     )
 
 # =========================
