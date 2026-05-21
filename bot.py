@@ -3,30 +3,24 @@ from discord.ext import commands
 import os
 from datetime import datetime, timezone
 
-# =========================
-# 🔐 TOKEN (Render ENV)
-# =========================
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 if TOKEN is None:
-    raise Exception("DISCORD_TOKEN not found in environment variables")
+    raise Exception("DISCORD_TOKEN not found")
 
-# =========================
-# 🤖 BOT SETUP
-# =========================
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # =========================
-# ⏱️ TIME SYSTEM (UTC SAFE)
+# ⏱️ TIME SYSTEM (UTC)
 # =========================
-HARD_INTERVAL = 14 * 60
-NM_INTERVAL = 4 * 60 * 60
+HARD_INTERVAL_1 = 14 * 60
+HARD_INTERVAL_2 = 20 * 60  # example second cycle (change if needed)
 
-HARD_START = datetime(2026, 5, 20, 0, 0, tzinfo=timezone.utc)
-NM_START = datetime(2026, 5, 20, 2, 0, tzinfo=timezone.utc)
+HARD_START_1 = datetime(2026, 5, 20, 0, 0, tzinfo=timezone.utc)
+HARD_START_2 = datetime(2026, 5, 20, 1, 0, tzinfo=timezone.utc)
 
 def get_remaining(start, interval):
     now = datetime.now(timezone.utc)
@@ -39,23 +33,26 @@ def get_remaining(start, interval):
 
     return f"{h}h {m}m {s}s"
 
-# =========================
-# 📡 EVENTS
-# =========================
 @bot.event
 async def on_ready():
     print(f"ONLINE: {bot.user}")
 
 # =========================
-# 🎮 COMMANDS
+# 🎮 SINGLE COMMAND SHOW 2 TIMES
 # =========================
 @bot.command()
 async def hard(ctx):
-    await ctx.send(f"🦠 Next Hard Virus in: **{get_remaining(HARD_START, HARD_INTERVAL)}** (UTC)")
+    time1 = get_remaining(HARD_START_1, HARD_INTERVAL_1)
+    time2 = get_remaining(HARD_START_2, HARD_INTERVAL_2)
 
-@bot.command()
-async def nm(ctx):
-    await ctx.send(f"☠️ Next Nightmare Virus in: **{get_remaining(NM_START, NM_INTERVAL)}** (UTC)")
+    await ctx.send(
+        f"""🦠 **Hard Virus System**
+
+🔥 Hard Virus 1: **{time1}**
+🔥 Hard Virus 2: **{time2}**
+
+(UTC Time)"""
+    )
 
 # =========================
 # 🚀 RUN BOT
